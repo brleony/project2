@@ -10,9 +10,11 @@ form {
 
 .jumbotron {
     background-color: #b58b97;
+    margin-bottom: 0px;
+    padding: 30px;
 }
 
-#username_validation {
+.validation_message {
     color: red;
     font-weight: 600;
 }

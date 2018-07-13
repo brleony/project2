@@ -6,8 +6,11 @@
 // Wait until DOM has loaded.
 document.addEventListener('DOMContentLoaded', () => {
 
+    // Connect to websocket
+    socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+
     // Get username from local storage.
-    username = localStorage.getItem('username');
+    var username = localStorage.getItem('username');
     console.log(username);
 
     // If user hasn't chosen a name: show username modal.
@@ -18,8 +21,46 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#welcome').innerHTML = `Hello ${username}`;
     }
 
+    // When new channel is broadcasted.
+    socket.on('channels', channel_name => {
+        console.log(channel_name);
+
+        // Add new channel to channel list.
+        var list = document.querySelector('#channel_list');
+        var new_channel = document.createElement('li');
+        new_channel.innerHTML = `<a href="#" class="nav-link">#${channel_name}</a>`;
+        list.appendChild(new_channel);
+    });
+
+    // When new channel already exists.
+    socket.on('channel_exists', ok => {
+        document.querySelector('#channel_name_validation').innerHTML = 'Channel already exists.';
+    });
 });
 
+// When user clicks the 'create channel' button, validate the channel name and emit the new channel.
+function create_channel() {
+
+    // Remove validation message.
+    document.querySelector('#channel_name_validation').innerHTML = '';
+
+    // Save channel name.
+    const channel_name = document.querySelector('#channel_name').value;
+    console.log(channel_name);
+
+    // Validate channel name.
+    if (!channel_name) {
+            document.querySelector('#channel_name_validation').innerHTML = 'Enter a channel name.';
+    } else if (channel_name.length < 4 || channel_name.length > 14) {
+            document.querySelector('#channel_name_validation').innerHTML = 'Channel name needs to be between 4 and 14 characters.';
+    } else {
+        // Empty input field.
+        document.querySelector('#channel_name').value = '';
+
+        socket.emit('newchannel', {'channel_name': channel_name});
+    }
+
+}
 
 // Shows the username modal until user has entered a valid username.
 function username_modal() {
