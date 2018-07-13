@@ -19,21 +19,30 @@
     </head>
 
     <body>
-        <main>
-            <div class="container">
-                <div class="row" id="ask_username">
-                    <div class="col-md-12 text-center">
-                        <form>
-                            <label for="username">Please choose a username.</label>
-                            <input autocomplete="off" name="username" id="username" type="text"/>
-                            <small id="username_help" class="form-text text-muted">
-                                Other users will be able to see this name.
-                            </small>
-                            <button type="button" class="btn btn-secondary" id="username_button">>>></button>
-                        </form>
+        <!-- Username modal -->
+        <div class="modal fade" id="username_modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Please choose a username.</h5>
+                    </div>
+                    <div class="modal-body">
+                        <input autocomplete="off" name="username" id="username" type="text"/>
+                        <small id="username_help" class="form-text text-muted">
+                            Other users will be able to see this name.
+                        </small>
+                        <p id="username_validation"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="username_button">>>></button>
                     </div>
                 </div>
             </div>
-        </main>
+        </div>
+
+        <div class="jumbotron">
+            <h1 class="display-4" id="welcome"></h1>
+        </div>
+
     </body>
 </html>
