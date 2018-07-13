@@ -16,3 +16,17 @@ form {
     color: red;
     font-weight: 600;
 }
+
+/*
+* Blurred background modal
+*
+* Base on example by webprogramozo
+* https://gist.github.com/webprogramozo/9684826e469e5dc375e98f65559e1509
+*/
+.modal-open > :not(.modal) {
+    -webkit-filter: blur(3px);
+    -moz-filter: blur(3px);
+    -o-filter: blur(3px);
+    -ms-filter: blur(3px);
+    filter: blur(3px);
+}
