@@ -60,7 +60,12 @@
                 </ul>
                 <form class="form-inline ml-auto">
                     <p id="channel_name_validation" class="validation_message"></p>
-                    <input autocomplete="off" class="form-control mr-sm-2" id="channel_name" type="text" placeholder="Channel name">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">#</span>
+                        </div>
+                        <input autocomplete="off" class="form-control mr-sm-2" id="channel_name" type="text" placeholder="Channel name">
+                    </div>
                     <button type="button" class="btn btn-secondary my-2 my-sm-0" onclick="create_channel()">Create channel</button>
                 </form>
             </div>
@@ -68,7 +73,7 @@
         <div class="container">
             <div class="row">
                 <div class="col">
-                    <h3 id="channel_title">🡅 Click one of the existing channels or create a new channel to start chatting.</h3>
+                    <h3 id="channel_title">🡅 Click one of the existing channels or create a new channel to start chatting 🡅</h3>
                     <ul id="channel_messages">
                     </ul>
                 </div>
