@@ -8,9 +8,18 @@ body {
     padding: 30px;
 }
 
+#message_div {
+    height: 500px;
+    overflow-y: scroll;
+}
+
 .validation_message {
     color: red;
     font-weight: 600;
+}
+
+#channel_title {
+    text-align: center;
 }
 
 /*

@@ -20,25 +20,39 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#welcome').innerHTML = `Hello ${username}`;
     }
 
-    // When new channel is broadcasted.
-    socket.on('channels', channel_name => {
-
-        // Add new channel to channel list.
-        var list = document.querySelector('#channel_list');
-        var new_channel = document.createElement('li');
-        new_channel.setAttribute("class", "nav-item");
-        new_channel.innerHTML = `<a class="nav-link channel_menu" data-channel="${channel_name}">#${channel_name}</a>`;
-        list.appendChild(new_channel);
-    });
+    // Create channel.
+    document.querySelector('#create_channel').onclick = () => {
+        create_channel();
+    };
 
     // When new channel already exists.
-    socket.on('channel_exists', ok => {
+    socket.on('channel_exists', () => {
         document.querySelector('#channel_name_validation').innerHTML = 'Channel already exists.';
+    });
+
+    // When new channel is broadcasted.
+    socket.on('channels', channel_name => {
+        channel_broadcasted(channel_name);
     });
 
     // Set onclick function for channels in menu.
     document.querySelectorAll('.channel_menu').forEach(link => {
         change_channel(link);
+    });
+
+    // Send message.
+    document.querySelector('#send_message').onclick = () => {
+        send_message();
+    };
+
+    // When a new message is broadcasted.
+    socket.on('new_message', (data) => {
+        message_broadcasted(data);
+    });
+
+    // When messages are broadcasted.
+    socket.on('show_messages', (data) => {
+        show_messages(data);
     });
 });
 
@@ -48,15 +62,39 @@ function change_channel(link) {
 
         const channel_name = link.dataset.channel;
 
-        // Change the displayed titel.
+        // Save current channel.
+        localStorage.setItem('current_channel', channel_name);
+
+        // Change the displayed title.
         const channel_titel = document.querySelector('#channel_title');
         channel_titel.innerHTML = `#${channel_name}`;
 
-        // Show messages. TODO
+        // Remove old messages.
+        document.querySelector('#channel_messages').innerHTML = '';
+
+        // Ask for messages.
+        socket.emit('show_messages', {'channel_name': channel_name});
 
         // Show input field.
         document.querySelector('#message_input').style.display = "block";
     };
+}
+
+// Show all messages that were sent to a channel.
+function show_messages (messages) {
+
+    messages.forEach(message => {
+
+        const time = new Date(message['timestamp']);
+
+        // Create new list item.
+        const this_message = document.createElement('li');
+        this_message.innerHTML = `${message["username"]} @ ${time}: ${message['message']}`;
+
+        // Append to channel list.
+        var list = document.querySelector('#channel_messages');
+        list.appendChild(this_message);
+    });
 }
 
 // When user clicks the 'create channel' button, validate the channel name and emit the new channel.
@@ -77,10 +115,59 @@ function create_channel() {
         // Empty input field.
         document.querySelector('#channel_name').value = '';
 
-        // Emit new channel.
-        socket.emit('newchannel', {'channel_name': channel_name});
-    }
+        // Save username and time.
+        const username = localStorage.getItem('username');
+        const timestamp = Date.now();
 
+        // Emit new channel.
+        socket.emit('newchannel', {'channel_name': channel_name, 'username': username, 'timestamp': timestamp});
+    }
+}
+
+// Add the new channel tot the channel list.
+function channel_broadcasted(channel_name) {
+
+    // Create new list item.
+    var new_channel = document.createElement('li');
+    new_channel.setAttribute("class", "nav-item");
+    new_channel.innerHTML = `<a class="nav-link channel_menu" data-channel="${channel_name}">#${channel_name}</a>`;
+
+    // Append to channel list.
+    var list = document.querySelector('#channel_list');
+    list.appendChild(new_channel);
+}
+
+// Send a message in the current channel when user clicks 'send'.
+function send_message() {
+
+    // Get message, username and current channel.
+    const message = document.querySelector('#message').value;
+    const username = localStorage.getItem('username');
+    const current_channel = localStorage.getItem('current_channel');
+    const timestamp = Date.now();
+
+    // Empty input field.
+    document.querySelector('#message').value = '';
+
+    // Emit new message.
+    socket.emit('message', {'message': message, 'current_channel': current_channel, 'username': username, 'timestamp': timestamp});
+}
+
+// If a new message is sent to the current channel, display the message.
+function message_broadcasted(data) {
+
+    if (data["current_channel"] === localStorage.getItem('current_channel')) {
+
+        const time = new Date(data['timestamp']);
+
+        // Create new list item.
+        const new_message = document.createElement('li');
+        new_message.innerHTML = `${data["username"]} @ ${time}: ${data['message']}`;
+
+        // Append to channel list.
+        var list = document.querySelector('#channel_messages');
+        list.appendChild(new_message);
+    }
 }
 
 // Shows the username modal until user has entered a valid username.
@@ -103,11 +190,6 @@ function username_modal() {
 
             // Save username.
             localStorage.setItem('username', username);
-
-            $('#username_modal').modal('hide');
-
-            // Welcome user.
-            document.querySelector('#welcome').innerHTML = `Hello ${username}`;
         }
     };
 }

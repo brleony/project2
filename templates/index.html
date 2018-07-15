@@ -22,7 +22,7 @@
     </head>
 
     <body>
-        <!-- Username modal -->
+        <!-- Ask username modal -->
         <div class="modal fade" id="username_modal" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -43,6 +43,7 @@
             </div>
         </div>
 
+        <!-- Hello 'name' jumbotron -->
         <div class="jumbotron">
             <h1 class="display-4" id="welcome"></h1>
         </div>
@@ -66,31 +67,28 @@
                         </div>
                         <input autocomplete="off" class="form-control mr-sm-2" id="channel_name" type="text" placeholder="Channel name">
                     </div>
-                    <button type="button" class="btn btn-secondary my-2 my-sm-0" onclick="create_channel()">Create channel</button>
+                    <button type="button" class="btn btn-secondary my-2 my-sm-0" id="create_channel">Create channel</button>
                 </form>
             </div>
         </nav>
 
-        <!-- Channel -->
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <h3 id="channel_title">🡅 Click one of the existing channels or create a new channel to start chatting 🡅</h3>
-                    <ul id="channel_messages">
-                    </ul>
-                </div>
+        <!-- Channel messages-->
+        <div>
+            <h3 id="channel_title">🡅 Click one of the existing channels or create a new channel to start chatting 🡅</h3>
+            <div id="message_div">
+                <ul id="channel_messages">
+                </ul>
             </div>
-            <!-- Message input -->
-            <div class="row fixed-bottom" id="message_input" style="display: none">
-                <div class="col">
-                    <form class="ml-auto input-group">
-                        <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
-                        <div class="input-group-append">
-                            <button class="btn btn-secondary" type="button">Send</button>
-                        </div>
-                    </form>
+        </div>
+
+        <!-- Message input -->
+        <div class="fixed-bottom" id="message_input" style="display: none">
+            <form class="ml-auto input-group">
+                <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
+                <div class="input-group-append">
+                    <button class="btn btn-secondary" type="button" id="send_message">Send</button>
                 </div>
-            </div>
+            </form>
         </div>
     </body>
 </html>
