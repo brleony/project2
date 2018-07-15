@@ -2,12 +2,6 @@ body {
     background-color: #D3BAC1;
 }
 
-/* Override Bootstrap's 100% width for form controls */
-form {
-    width: auto;
-    display: inline-block;
-}
-
 .jumbotron {
     background-color: #b58b97;
     margin-bottom: 0px;

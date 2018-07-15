@@ -11,7 +11,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Get username from local storage.
     var username = localStorage.getItem('username');
-    console.log(username);
 
     // If user hasn't chosen a name: show username modal.
     if (!username) {
@@ -37,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#channel_name_validation').innerHTML = 'Channel already exists.';
     });
 
-    // When channel is clicked in menu.
+    // Set onclick function for channels in menu.
     document.querySelectorAll('.channel_menu').forEach(link => {
         change_channel(link);
     });
@@ -48,11 +47,15 @@ function change_channel(link) {
     link.onclick = () => {
 
         const channel_name = link.dataset.channel;
-        console.log(channel_name);
 
         // Change the displayed titel.
         const channel_titel = document.querySelector('#channel_title');
         channel_titel.innerHTML = `#${channel_name}`;
+
+        // Show messages. TODO
+
+        // Show input field.
+        document.querySelector('#message_input').style.display = "block";
     };
 }
 
