@@ -47,7 +47,7 @@
             <h1 class="display-4" id="welcome"></h1>
         </div>
 
-        <!-- Navbar for channels -->
+        <!-- Navbar for channel list -->
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
             <div class="navbar-collapse">
                 <span class="navbar-text">
@@ -55,7 +55,7 @@
                 </span>
                 <ul class="nav navbar-nav" id="channel_list">
                     {% for channel in channel_list %}
-                        <li class="nav-item"><a href="#" class="nav-link">#{{ channel }}</a></li>
+                        <li class="nav-item"><a class="nav-link channel_menu" data-channel="{{ channel }}">#{{ channel }}</a></li>
                     {% endfor %}
                 </ul>
                 <form class="form-inline ml-auto">
@@ -70,6 +70,8 @@
                 </form>
             </div>
         </nav>
+
+        <!-- Channel -->
         <div class="container">
             <div class="row">
                 <div class="col">

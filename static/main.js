@@ -23,12 +23,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When new channel is broadcasted.
     socket.on('channels', channel_name => {
-        console.log(channel_name);
 
         // Add new channel to channel list.
         var list = document.querySelector('#channel_list');
         var new_channel = document.createElement('li');
-        new_channel.innerHTML = `<a href="#" class="nav-link">#${channel_name}</a>`;
+        new_channel.setAttribute("class", "nav-item");
+        new_channel.innerHTML = `<a class="nav-link channel_menu" data-channel="${channel_name}">#${channel_name}</a>`;
         list.appendChild(new_channel);
     });
 
@@ -36,7 +36,25 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('channel_exists', ok => {
         document.querySelector('#channel_name_validation').innerHTML = 'Channel already exists.';
     });
+
+    // When channel is clicked in menu.
+    document.querySelectorAll('.channel_menu').forEach(link => {
+        change_channel(link);
+    });
 });
+
+// When a channel is clicked, change the display title and message to those of that channel.
+function change_channel(link) {
+    link.onclick = () => {
+
+        const channel_name = link.dataset.channel;
+        console.log(channel_name);
+
+        // Change the displayed titel.
+        const channel_titel = document.querySelector('#channel_title');
+        channel_titel.innerHTML = `#${channel_name}`;
+    };
+}
 
 // When user clicks the 'create channel' button, validate the channel name and emit the new channel.
 function create_channel() {
@@ -46,7 +64,6 @@ function create_channel() {
 
     // Save channel name.
     const channel_name = document.querySelector('#channel_name').value;
-    console.log(channel_name);
 
     // Validate channel name.
     if (!channel_name) {
@@ -57,6 +74,7 @@ function create_channel() {
         // Empty input field.
         document.querySelector('#channel_name').value = '';
 
+        // Emit new channel.
         socket.emit('newchannel', {'channel_name': channel_name});
     }
 
