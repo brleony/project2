@@ -168,11 +168,14 @@ function message_broadcasted(message) {
 // Add a message with timestamp, username and content to the message list.
 function append_message(message) {
 
+    // Format the time.
     const time = new Date(message['timestamp']);
+    const options = {hour: 'numeric', minute: 'numeric', day: 'numeric', month: 'short'};
+    const time_formatted = time.toLocaleString('en-GB', options);
 
     // Create new list item.
     const this_message = document.createElement('li');
-    this_message.innerHTML = `${message['username']} @ ${time}: ${message['message']}`;
+    this_message.innerHTML = `${message['username']} @ ${time_formatted}: ${message['message']}`;
 
     // Append to channel list.
     var list = document.querySelector('#channel_messages');
