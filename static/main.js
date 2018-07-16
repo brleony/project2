@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#welcome').innerHTML = `Hello ${username}`;
     }
 
+    if (localStorage.getItem('current_channel')) {
+        change_channel(localStorage.getItem('current_channel'));
+    }
+
     // Create channel.
     document.querySelector('#create_channel').onclick = () => {
         create_channel();
@@ -37,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Set onclick function for channels in menu.
     document.querySelectorAll('.channel_menu').forEach(link => {
-        change_channel(link);
+        channel_clicked(link);
     });
 
     // Send message.
@@ -56,8 +60,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// When a channel is clicked, change the display title and message to those of that channel.
-function change_channel(link) {
+// When a channel is clicked, get and save the name of the channel.
+function channel_clicked(link) {
     link.onclick = () => {
 
         const channel_name = link.dataset.channel;
@@ -65,19 +69,26 @@ function change_channel(link) {
         // Save current channel.
         localStorage.setItem('current_channel', channel_name);
 
-        // Change the displayed title.
-        const channel_titel = document.querySelector('#channel_title');
-        channel_titel.innerHTML = `#${channel_name}`;
-
-        // Remove old messages.
-        document.querySelector('#channel_messages').innerHTML = '';
-
-        // Ask for messages.
-        socket.emit('show_messages', {'channel_name': channel_name});
-
-        // Show input field.
-        document.querySelector('#message_input').style.display = "block";
+        // Change the displayed title and messages.
+        change_channel(channel_name);
     };
+}
+
+// Display the channel (title and messages) of the channel that is passed as parameter.
+function change_channel(channel_name) {
+
+    // Change the displayed title.
+    const channel_titel = document.querySelector('#channel_title');
+    channel_titel.innerHTML = `#${channel_name}`;
+
+    // Remove old messages.
+    document.querySelector('#channel_messages').innerHTML = '';
+
+    // Ask server for messages.
+    socket.emit('show_messages', {'channel_name': channel_name});
+
+    // Show input field.
+    document.querySelector('#message_input').style.display = "block";
 }
 
 // Show all messages that were sent to a channel.
@@ -85,15 +96,7 @@ function show_messages (messages) {
 
     messages.forEach(message => {
 
-        const time = new Date(message['timestamp']);
-
-        // Create new list item.
-        const this_message = document.createElement('li');
-        this_message.innerHTML = `${message["username"]} @ ${time}: ${message['message']}`;
-
-        // Append to channel list.
-        var list = document.querySelector('#channel_messages');
-        list.appendChild(this_message);
+        append_message(message);
     });
 }
 
@@ -154,20 +157,26 @@ function send_message() {
 }
 
 // If a new message is sent to the current channel, display the message.
-function message_broadcasted(data) {
+function message_broadcasted(message) {
 
-    if (data["current_channel"] === localStorage.getItem('current_channel')) {
+    if (message["current_channel"] === localStorage.getItem('current_channel')) {
 
-        const time = new Date(data['timestamp']);
-
-        // Create new list item.
-        const new_message = document.createElement('li');
-        new_message.innerHTML = `${data["username"]} @ ${time}: ${data['message']}`;
-
-        // Append to channel list.
-        var list = document.querySelector('#channel_messages');
-        list.appendChild(new_message);
+        append_message(message);
     }
+}
+
+// Add a message with timestamp, username and content to the message list.
+function append_message(message) {
+
+    const time = new Date(message['timestamp']);
+
+    // Create new list item.
+    const this_message = document.createElement('li');
+    this_message.innerHTML = `${message['username']} @ ${time}: ${message['message']}`;
+
+    // Append to channel list.
+    var list = document.querySelector('#channel_messages');
+    list.appendChild(this_message);
 }
 
 // Shows the username modal until user has entered a valid username.
