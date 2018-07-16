@@ -39,9 +39,17 @@ document.addEventListener('DOMContentLoaded', () => {
         channel_broadcasted(channel_name);
     });
 
-    // Set onclick function for channels in menu.
+    // For every channel in menu: if channel is clicked, go to that channel.
     document.querySelectorAll('.channel_menu').forEach(link => {
-        channel_clicked(link);
+        link.onclick = () => {
+
+            // Get and save channel name.
+            const channel_name = link.dataset.channel;
+            localStorage.setItem('current_channel', channel_name);
+
+            // Change the displayed title and messages.
+            change_channel(channel_name);
+        };
     });
 
     // Send message.
@@ -59,20 +67,6 @@ document.addEventListener('DOMContentLoaded', () => {
         show_messages(data);
     });
 });
-
-// When a channel is clicked, get and save the name of the channel.
-function channel_clicked(link) {
-    link.onclick = () => {
-
-        const channel_name = link.dataset.channel;
-
-        // Save current channel.
-        localStorage.setItem('current_channel', channel_name);
-
-        // Change the displayed title and messages.
-        change_channel(channel_name);
-    };
-}
 
 // Display the channel (title and messages) of the channel that is passed as parameter.
 function change_channel(channel_name) {
