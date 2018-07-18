@@ -1,16 +1,89 @@
 body {
-    background-color: #D3BAC1;
+    background-image: url("https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    background-color: #9E656B; /* Copper rose */
 }
 
-.jumbotron {
-    background-color: #b58b97;
-    margin-bottom: 0px;
-    padding: 30px;
+#header {
+    background-color: #CC8C94; /* Puce */
+    margin-top: 5vh;
+    height: 18vh;
+    padding: 4vh;
 }
 
-#message_div {
-    height: 500px;
+#welcome {
+    font-size: 8vh;
+}
+
+@media (min-width: 768px) {
+    #channel_list {
+      height: 54vh;
+    }
+}
+@media (max-width: 767px) {
+    #channel_list {
+      height: 40px;
+    }
+}
+
+#sidebar {
+    background-color: lightgrey;
+    padding: 0;
+}
+#channel_form {
+    text-align: center;
+    height: 11vh;
+    padding: 1vh;
+}
+#create_channel {
+    margin-top: 3px;
+}
+#nav_title {
+    font-weight: 600;
+    font-size: 2.5vh;
+    height: 6vh;
+    padding: 1vh;
+}
+#channel_list {
     overflow-y: scroll;
+    overflow-x: hidden;
+    width: inherit;
+    margin: 0;
+}
+#channel_list a:hover, #channel_list a:active {
+    color: grey;
+}
+
+#channel {
+    background-color: white;
+    padding: 0px;
+    position: relative;
+}
+#channel_title {
+    text-align: center;
+    height: 5vh;
+    font-size: 4vh;
+}
+#message_div {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 58vh;
+    width: inherit;
+}
+#message_input {
+    position: absolute;
+    width: inherit;
+    height: 5vh;
+    bottom: 0;
+}
+
+ul {
+    list-style-type: none;
+}
+ul li {
+    padding: 8px;
 }
 
 .validation_message {
@@ -18,14 +91,10 @@ body {
     font-weight: 600;
 }
 
-#channel_title {
-    text-align: center;
-}
-
 /*
 * Blurred background modal
 *
-* Base on example by webprogramozo
+* Base on example by webprogramoz:
 * https://gist.github.com/webprogramozo/9684826e469e5dc375e98f65559e1509
 */
 .modal-open > :not(.modal) {

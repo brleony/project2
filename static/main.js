@@ -126,8 +126,7 @@ function channel_broadcasted(channel_name) {
 
     // Create new list item.
     var new_channel = document.createElement('li');
-    new_channel.setAttribute("class", "nav-item");
-    new_channel.innerHTML = `<a class="nav-link channel_menu" data-channel="${channel_name}">#${channel_name}</a>`;
+    new_channel.innerHTML = `<a class="channel_menu" data-channel="${channel_name}">#${channel_name}</a>`;
 
     // Append to channel list.
     var list = document.querySelector('#channel_list');

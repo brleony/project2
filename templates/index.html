@@ -43,52 +43,57 @@
             </div>
         </div>
 
-        <!-- Hello 'name' jumbotron -->
-        <div class="jumbotron">
-            <h1 class="display-4" id="welcome"></h1>
-        </div>
-
-        <!-- Navbar for channel list -->
-        <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
-            <div class="navbar-collapse">
-                <span class="navbar-text">
-                    Channels:
-                </span>
-                <ul class="nav navbar-nav" id="channel_list">
-                    {% for channel in channel_list %}
-                        <li class="nav-item"><a class="nav-link channel_menu" data-channel="{{ channel }}">#{{ channel }}</a></li>
-                    {% endfor %}
-                </ul>
-                <form class="form-inline ml-auto">
-                    <p id="channel_name_validation" class="validation_message"></p>
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text" id="basic-addon1">#</span>
-                        </div>
-                        <input autocomplete="off" class="form-control mr-sm-2" id="channel_name" type="text" placeholder="Channel name">
-                    </div>
-                    <button type="button" class="btn btn-secondary my-2 my-sm-0" id="create_channel">Create channel</button>
-                </form>
-            </div>
-        </nav>
-
-        <!-- Channel messages-->
-        <div>
-            <h3 id="channel_title">🡅 Click one of the existing channels or create a new channel to start chatting 🡅</h3>
-            <div id="message_div">
-                <ul id="channel_messages">
-                </ul>
-            </div>
-        </div>
-
-        <!-- Message input -->
-        <div class="fixed-bottom" id="message_input" style="display: none">
-            <form class="ml-auto input-group">
-                <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
-                <div class="input-group-append">
-                    <button class="btn btn-secondary" type="button" id="send_message">Send</button>
+        <div class="container">
+            <div class="row" id="header">
+                <div class="col">
+                    <h1 id="welcome"></h1>
                 </div>
-            </form>
+            </div>
+
+            <div class="row">
+                <!-- Sidebar for channel list -->
+                <div class="col-md-3" id="sidebar">
+                    <form id="channel_form">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text" id="basic-addon1">#</span>
+                            </div>
+                            <input autocomplete="off" class="form-control" id="channel_name" type="text" placeholder="Channel name">
+                        </div>
+                        <button type="button" class="btn btn-secondary" id="create_channel">Create</button>
+                        <p id="channel_name_validation" class="validation_message"></p>
+                    </form>
+                    <div id="class_navigation">
+                        <div id="nav_title">
+                            <span>Channels:</span>
+                        </div>
+                        <ul id="channel_list">
+                            {% for channel in channel_list %}
+                                <li><a class="channel_menu" data-channel="{{ channel }}">#{{ channel }}</a></li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Channel messages-->
+                <div class="col-md-9" id="channel">
+                    <h3 id="channel_title">Click one of the existing channels</br>or create a new channel to start chatting</h3>
+                    <div id="message_div">
+                        <ul id="channel_messages">
+                        </ul>
+                    </div>
+
+                    <!-- Message input -->
+                    <div id="message_input" style="display: none">
+                        <form class="ml-auto input-group">
+                            <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
+                            <div class="input-group-append">
+                                <button class="btn btn-secondary" type="button" id="send_message">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>
