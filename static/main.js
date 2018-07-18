@@ -106,8 +106,8 @@ function create_channel() {
     // Validate channel name.
     if (!channel_name) {
             document.querySelector('#channel_name_validation').innerHTML = 'Enter a channel name.';
-    } else if (channel_name.length < 4 || channel_name.length > 14) {
-            document.querySelector('#channel_name_validation').innerHTML = 'Channel name needs to be between 4 and 14 characters.';
+    } else if (channel_name.length < 3 || channel_name.length > 15) {
+            document.querySelector('#channel_name_validation').innerHTML = 'Channel name needs to be between 3 and 15 characters.';
     } else {
         // Empty input field.
         document.querySelector('#channel_name').value = '';
@@ -190,8 +190,10 @@ function username_modal() {
         // Ensure user has filled in username that is between 4 and 20 characters.
         if (!username) {
             document.querySelector('#username_validation').innerHTML = 'Enter a username.';
-        } else if (username.length < 4 || username.length > 14) {
-            document.querySelector('#username_validation').innerHTML = 'Username needs to be between 4 and 14 characters.';
+        } else if (username.length < 3 || username.length > 15) {
+            document.querySelector('#username_validation').innerHTML = 'Username needs to be between 3 and 15 characters.';
+        } else if (username === 'Admin' || username === 'admin') {
+            document.querySelector('#username_validation').innerHTML = 'Please choose a different username.';
         } else {
 
             // Save username.

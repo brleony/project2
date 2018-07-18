@@ -7,8 +7,13 @@ app = Flask(__name__)
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
-# Dict with all channels and messages.
-channels = {'General': []}
+# Dict with default challenges and messages.
+channels = {'Chitchat': [{'username': 'Admin', 'timestamp': 1532433600000,
+                'message': '🗣️ Feel free to use this channel to talk about whatever you feel like'}],
+            'Music': [{'username': 'Admin', 'timestamp': 1532433600000,
+                'message': 'Use this channel to talk about your favorite artists, to share a cool song you just discovered or to spread the love about that awesome album 🎵'}],
+            'Photography': [{'username': 'Admin', 'timestamp': 1532433600000,
+                'message': 'Photography enthusiasts unite! 📷 Share your pics, ask for advice or flaunt your favorite photo gear.'}]}
 
 @app.route("/")
 def index():
