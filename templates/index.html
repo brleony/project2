@@ -51,8 +51,11 @@
             </div>
 
             <div class="row">
+
                 <!-- Sidebar for channel list -->
                 <div class="col-md-3" id="sidebar">
+
+                    <!-- Form to create channel -->
                     <form id="channel_form">
                         <div class="input-group">
                             <div class="input-group-prepend">
@@ -63,6 +66,8 @@
                         <button type="button" class="btn btn-secondary" id="create_channel">Create</button>
                         <p id="channel_name_validation" class="validation_message"></p>
                     </form>
+
+                    <!-- List of existing channels -->
                     <div id="class_navigation">
                         <div id="nav_title">
                             <span>Channels:</span>
@@ -85,10 +90,10 @@
 
                     <!-- Message input -->
                     <div id="message_input" style="display: none">
-                        <form class="ml-auto input-group">
+                        <form action="#" onsubmit="send_message(); return false" class="ml-auto input-group">
                             <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
                             <div class="input-group-append">
-                                <button class="btn btn-secondary" type="button" id="send_message">Send</button>
+                                <button class="btn btn-secondary" type="submit">Send</button>
                             </div>
                         </form>
                     </div>

@@ -52,11 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     });
 
-    // Send message.
-    document.querySelector('#send_message').onclick = () => {
-        send_message();
-    };
-
     // When a new message is broadcasted.
     socket.on('new_message', (data) => {
         message_broadcasted(data);
@@ -133,7 +128,7 @@ function channel_broadcasted(channel_name) {
     list.appendChild(new_channel);
 }
 
-// Send a message in the current channel when user clicks 'send'.
+// Send a message in the current channel when user clicks 'send' or hits enter.
 function send_message() {
 
     // Get message, username and current channel.
