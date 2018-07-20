@@ -74,7 +74,7 @@
                         </div>
                         <ul id="channel_list">
                             {% for channel in channel_list %}
-                                <li><a class="channel_menu" data-channel="{{ channel }}">#{{ channel }}</a></li>
+                                <li><a class="channel_menu" onclick="display_channel()" data-channel="{{ channel }}">#{{ channel }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

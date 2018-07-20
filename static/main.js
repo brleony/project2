@@ -20,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelector('#welcome').innerHTML = `Hello ${username}`;
     }
 
+    // If channel was remembered, go to that channel.
     if (localStorage.getItem('current_channel')) {
-        change_channel(localStorage.getItem('current_channel'));
+        display_channel(localStorage.getItem('current_channel'));
     }
 
     // Create channel.
@@ -39,19 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
         channel_broadcasted(channel_name);
     });
 
-    // For every channel in menu: if channel is clicked, go to that channel.
-    document.querySelectorAll('.channel_menu').forEach(link => {
-        link.onclick = () => {
-
-            // Get and save channel name.
-            const channel_name = link.dataset.channel;
-            localStorage.setItem('current_channel', channel_name);
-
-            // Change the displayed title and messages.
-            change_channel(channel_name);
-        };
-    });
-
     // When a new message is broadcasted.
     socket.on('new_message', (data) => {
         message_broadcasted(data);
@@ -63,8 +51,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Display the channel (title and messages) of the channel that is passed as parameter.
-function change_channel(channel_name) {
+// Display the channel (title and messages).
+function display_channel (channel_name) {
+
+    // If no parameter was passed.
+    if (typeof channel_name === 'undefined') {
+
+        // Get channel name.
+        channel_name = this['event']['path'][0]['dataset']['channel'];
+
+        // Save channel name.
+        localStorage.setItem('current_channel', channel_name);
+    }
 
     // Change the displayed title.
     const channel_titel = document.querySelector('#channel_title');
@@ -121,7 +119,7 @@ function channel_broadcasted(channel_name) {
 
     // Create new list item.
     var new_channel = document.createElement('li');
-    new_channel.innerHTML = `<a class="channel_menu" data-channel="${channel_name}">#${channel_name}</a>`;
+    new_channel.innerHTML = `<a class="channel_menu" onclick="display_channel()" data-channel="${channel_name}">#${channel_name}</a>`;
 
     // Append to channel list.
     var list = document.querySelector('#channel_list');
