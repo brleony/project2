@@ -1,6 +1,7 @@
-/**
+/* * * * * * *
 * Name: Leony Brok
-**/
+* Web Programming with Python and Javascript
+* * * * * * */
 
 
 // Wait until DOM has loaded.
@@ -51,6 +52,16 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
+/* * * * * * *
+* Make first letter of string uppercase.
+*
+* By Steve Hansell:
+* https://stackoverflow.com/a/3291856/8951875
+* * * * * * */
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+};
+
 // Display the channel (title and messages).
 function display_channel (channel_name) {
 
@@ -94,7 +105,7 @@ function create_channel() {
     document.querySelector('#channel_name_validation').innerHTML = '';
 
     // Save channel name.
-    const channel_name = document.querySelector('#channel_name').value;
+    var channel_name = document.querySelector('#channel_name').value;
 
     // Validate channel name.
     if (!channel_name) {
@@ -108,6 +119,9 @@ function create_channel() {
         // Save username and time.
         const username = localStorage.getItem('username');
         const timestamp = Date.now();
+
+        // Capitalize channel name.
+        channel_name = channel_name.capitalize();
 
         // Emit new channel.
         socket.emit('newchannel', {'channel_name': channel_name, 'username': username, 'timestamp': timestamp});
