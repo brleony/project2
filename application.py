@@ -1,6 +1,7 @@
 import os
+import time
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify, request
 from flask_socketio import SocketIO, emit
 
 app = Flask(__name__)
@@ -61,11 +62,11 @@ def message(data):
     # Emit.
     emit("new_message", data, broadcast=True)
 
-@socketio.on("show_messages")
-def show_messages(data):
+@app.route("/showmessages", methods=["POST"])
+def showmessages():
 
     # Get stored messages.
-    messages = channels[data["channel_name"]]
+    messages = channels[request.form.get("channel_name")]
 
-    # Emite.
-    emit("show_messages", messages)
+    # Return list of posts.
+    return jsonify(messages)

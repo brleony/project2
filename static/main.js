@@ -40,11 +40,6 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('new_message', (data) => {
         message_broadcasted(data);
     });
-
-    // When messages are broadcasted.
-    socket.on('show_messages', (data) => {
-        show_messages(data);
-    });
 });
 
 /* * * * * * *
@@ -77,8 +72,23 @@ function display_channel (channel_name) {
     // Remove old messages.
     document.querySelector('#channel_messages').innerHTML = '';
 
-    // Ask server for messages.
-    socket.emit('show_messages', {'channel_name': channel_name});
+    // Open new request to get messages.
+    const request = new XMLHttpRequest();
+    request.open('POST', '/showmessages');
+    request.onload = () => {
+
+        const messages = JSON.parse(request.responseText);
+
+        // Append messages.
+        messages.forEach(message => {
+            append_message(message);
+        });
+    };
+
+    // Send request with channel name.
+    const data = new FormData();
+    data.append('channel_name', channel_name);
+    request.send(data);
 
     // Show input field.
     document.querySelector('#message_input').style.display = "block";
