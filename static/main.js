@@ -7,6 +7,8 @@
 // Wait until DOM has loaded.
 document.addEventListener('DOMContentLoaded', () => {
 
+    counter = 0;
+
     // Connect to websocket
     socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
@@ -37,8 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // When a new message is broadcasted.
-    socket.on('new_message', (data) => {
-        message_broadcasted(data);
+    socket.on('new_message', (new_message) => {
+        message_broadcasted(new_message);
+    });
+
+    // When a deleted message is broadcasted.
+    socket.on('deleted_message', (data) => {
+        deleted_broadcasted(data);
     });
 });
 
@@ -199,6 +206,9 @@ function append_message(message) {
     // Create new list item.
     const this_message = document.createElement('li');
 
+    // Set ID.
+    this_message.id = message["id"];
+
     // Class and message depend on who message came from.
     if (message['username'] == localStorage.getItem('username')) {
 
@@ -206,6 +216,9 @@ function append_message(message) {
         this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}<i class="fas fa-times-circle" onclick="delete_message()"></i></p>`;
         this_message.classList.add('sent');
 
+    } else if (message['username'] == 'Admin') {
+        this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}</p>`;
+        this_message.classList.add('admin');
     } else {
         this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}</p>`;
         this_message.classList.add('reply');
@@ -216,9 +229,25 @@ function append_message(message) {
     list.appendChild(this_message).scrollIntoView({behavior: "smooth"});
 }
 
-// Delete user's own message.
+// Delete message.
 function delete_message() {
-    console.log('You are trying to delete a message.');
+
+    // Get message id.
+    var id = this['event']['path'][2].id;
+
+    const current_channel = localStorage.getItem('current_channel');
+
+    socket.emit('deletemessage', {'id': id, 'current_channel': current_channel});
+}
+
+// If someone deleted a message.
+function deleted_broadcasted(data) {
+
+    if (data["current_channel"] === localStorage.getItem('current_channel')) {
+
+        // Hide message.
+        document.getElementById(data["id"]).style.display = 'none';
+    }
 }
 
 // Shows modal that asks for username.

@@ -9,12 +9,15 @@ app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
 # Dict with default challenges and messages.
-channels = {'Chitchat': [{'username': 'Admin', 'timestamp': 1532433600000,
+channels = {'Chitchat': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
                 'message': '🗣️ Feel free to use this channel to talk about whatever you feel like'}],
-            'Music': [{'username': 'Admin', 'timestamp': 1532433600000,
+            'Music': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
                 'message': 'Use this channel to talk about your favorite artists, to share a cool song you just discovered or to spread the love about that awesome album 🎵'}],
-            'Photography': [{'username': 'Admin', 'timestamp': 1532433600000,
+            'Photography': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
                 'message': 'Photography enthusiasts unite! 📷 Share your pics, ask for advice or flaunt your favorite photo gear.'}]}
+
+# Counter for message id.
+counter = 0
 
 @app.route("/")
 def index():
@@ -48,19 +51,25 @@ def message(data):
 
     new_message = {}
 
+    # Get username, timestamp and message.
     new_message["message"] = data["message"]
     new_message["username"] = data["username"]
     new_message["timestamp"] = data["timestamp"]
-    current_channel = data["current_channel"]
+    current_channel, new_message["current_channel"] = data["current_channel"], data["current_channel"]
 
-    # Save new message.
+    # Set ID and increase counter.
+    global counter
+    new_message["id"] = counter
+    counter += 1
+
+    # Add new message to message list.
     channels[current_channel].append(new_message)
 
     # Only store 100 most recent messages.
     channels[current_channel] = channels[current_channel][-100:]
 
     # Emit.
-    emit("new_message", data, broadcast=True)
+    emit("new_message", new_message, broadcast=True)
 
 @app.route("/showmessages", methods=["POST"])
 def showmessages():
@@ -76,3 +85,22 @@ def showmessages():
 
     # Return list of posts.
     return jsonify(messages)
+
+@socketio.on("deletemessage")
+def deletemessage(data):
+
+    current_channel = data["current_channel"]
+
+    message_id = int(data["id"])
+
+    for i, message in enumerate(channels[current_channel]):
+        if message["id"] == message_id:
+            del channels[current_channel][i]
+
+            deleted = {}
+            deleted["id"] = message_id
+            deleted["current_channel"] = current_channel
+
+            emit("deleted_message", deleted, broadcast=True)
+
+            break

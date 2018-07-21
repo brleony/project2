@@ -41,7 +41,7 @@
                             <p id="username_validation" class="validation_message"></p>
                         </div>
                         <div class="modal-footer">
-                            <button type="submit" class="btn btn-secondary">>>></button>
+                            <button type="submit" class="btn btn-secondary"><i class="fas fa-sign-in-alt"></i></button>
                         </div>
                     </form>
                 </div>
@@ -61,14 +61,14 @@
                 <div class="col-md-3" id="sidebar">
 
                     <!-- Form to create channel -->
-                    <form action="#" onsubmit="create_channel(); return false" id="channel_form">
+                    <form action="#" onsubmit="create_channel(); return false;" id="channel_form">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">#</span>
                             </div>
                             <input autocomplete="off" class="form-control" id="channel_name" type="text" placeholder="Channel name">
                         </div>
-                        <button type="submit" class="btn btn-secondary" id="create_channel">Create</button>
+                        <button type="submit" class="btn btn-secondary" id="make_channel">Create</button>
                         <p id="channel_name_validation" class="validation_message"></p>
                     </form>
 
@@ -98,7 +98,7 @@
                         <form action="#" onsubmit="send_message(); return false" class="ml-auto input-group">
                             <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
                             <div class="input-group-append">
-                                <button class="btn btn-secondary" type="submit">Send</button>
+                                <button class="btn btn-secondary" type="submit"><i class="fas fa-angle-double-right"></i></button>
                             </div>
                         </form>
                     </div>

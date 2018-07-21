@@ -20,7 +20,7 @@ body {
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
-    background-color: #9E656B; /* Copper rose */
+    background-color: #9E656B; /* Copper Rose */
 }
 
 #header {
@@ -49,7 +49,7 @@ body {
     height: 11vh;
     padding: 1vh;
 }
-#create_channel {
+#make_channel {
     margin-top: 3px;
 }
 #nav_title {
@@ -104,11 +104,16 @@ body {
 }
 #channel_messages .sent p {
     float: right;
-    background-color: #CC8C94;
+    background-color: #FCB8C0; /* Light Pink */
 }
 #channel_messages .reply p {
     float: left;
+    background-color: whitesmoke;
+}
+#channel_messages .admin p {
+    float: left;
     background-color: lightgrey;
+    color: black;
 }
 #channel_messages li p {
     padding: 10px 20px 10px 20px;
@@ -124,6 +129,8 @@ body {
 /* Font awesome icons */
 .fas {
     color: white;
+}
+.fa-times-circle{
     padding-left: 15px;
 }
 
