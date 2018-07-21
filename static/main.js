@@ -213,7 +213,7 @@ function message_broadcasted(message) {
         append_message(message);
 
         // Play notification.
-        if (notification.muted == false) {
+        if (notification.muted == false && message["username"] != localStorage.getItem('username')) {
             notification.play();
         }
     }
