@@ -130,8 +130,13 @@ body {
 .fas {
     color: white;
 }
-.fa-times-circle{
+.fa-times-circle {
     padding-left: 15px;
+}
+.fa-volume-up, .fa-volume-off {
+    position: fixed;
+    top: 15px;
+    left: 15px;
 }
 
 ::selection {
@@ -139,12 +144,12 @@ body {
     background-color: black;
 }
 
-/*
+/* * * * * * *
 * Blurred background modal
 *
 * Base on example by webprogramoz:
 * https://gist.github.com/webprogramozo/9684826e469e5dc375e98f65559e1509
-*/
+* * * * * * */
 .modal-open > :not(.modal) {
     -webkit-filter: blur(3px);
     -moz-filter: blur(3px);

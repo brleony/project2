@@ -28,6 +28,10 @@ document.addEventListener('DOMContentLoaded', () => {
         display_channel(localStorage.getItem('current_channel'));
     }
 
+    notification = new Audio('static/light.mp3');
+
+    document.getElementById("audio_toggle").addEventListener("click", toggle_audio);
+
     // When new channel already exists.
     socket.on('channel_exists', () => {
         document.querySelector('#channel_name_validation').innerHTML = 'Channel already exists.';
@@ -48,6 +52,25 @@ document.addEventListener('DOMContentLoaded', () => {
         deleted_broadcasted(data);
     });
 });
+
+function toggle_audio() {
+
+    var icon = document.getElementById("audio_toggle");
+
+    if (notification.muted == true) {
+
+        notification.muted = false;
+
+        icon.classList.remove('fa-volume-off');
+        icon.classList.add('fa-volume-up');
+    } else if (notification.muted == false) {
+
+        notification.muted = true;
+
+        icon.classList.remove('fa-volume-up');
+        icon.classList.add('fa-volume-off');
+    }
+}
 
 /* * * * * * *
 * Make first letter of string uppercase.
@@ -189,9 +212,10 @@ function message_broadcasted(message) {
 
         append_message(message);
 
-        // Play sound.
-        var audio = new Audio('static/light.mp3');
-        audio.play();
+        // Play notification.
+        if (notification.muted == false) {
+            notification.play();
+        }
     }
 }
 

@@ -48,6 +48,9 @@
             </div>
         </div>
 
+        <!-- Audio toggle -->
+        <i class="fas fa-volume-up fa-2x" id="audio_toggle"></i>
+
         <div class="container">
             <div class="row" id="header">
                 <div class="col">
@@ -68,7 +71,7 @@
                             </div>
                             <input autocomplete="off" class="form-control" id="channel_name" type="text" placeholder="Channel name">
                         </div>
-                        <button type="submit" class="btn btn-secondary" id="make_channel">Create</button>
+                        <button type="submit" class="btn btn-secondary" id="make_channel"><i class="fas fa-angle-double-right"></i></button>
                         <p id="channel_name_validation" class="validation_message"></p>
                     </form>
 
@@ -98,7 +101,7 @@
                         <form action="#" onsubmit="send_message(); return false" class="ml-auto input-group">
                             <input autocomplete="off" class="form-control" id="message" type="text" placeholder="Message">
                             <div class="input-group-append">
-                                <button class="btn btn-secondary" type="submit"><i class="fas fa-angle-double-right"></i></button>
+                                <button class="btn btn-secondary" type="submit"><i class="fas fa-comment"></i></button>
                             </div>
                         </form>
                     </div>

@@ -38,6 +38,7 @@ def newchannel(data):
         first_message["username"] = "Admin"
         first_message["timestamp"] = data["timestamp"]
         first_message["message"] = "This channel was created by {}.".format(data["username"])
+        first_message["id"] = -1
 
         # Add channel with first message to channels dict.
         channels[new_channel] = []
