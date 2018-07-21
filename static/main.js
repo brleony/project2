@@ -177,28 +177,34 @@ function append_message(message) {
     list.appendChild(this_message);
 }
 
-// Shows the username modal until user has entered a valid username.
+// Shows modal that asks for username.
 function username_modal() {
 
-    // Show modal, don't close when backdrop is clicked or escape is pressed.
+    // Show modal.
     $('#username_modal').modal({backdrop: 'static', keyboard: false, show: true});
+}
 
-    // When button is clicked, validate username.
-    document.querySelector('#username_button').onclick = () => {
+// Get, validate and save username; hide modal.
+function save_username() {
 
-        const username = document.querySelector('#username').value;
+    const username = document.querySelector('#username').value;
 
-        // Ensure user has filled in username that is between 4 and 20 characters.
-        if (!username) {
-            document.querySelector('#username_validation').innerHTML = 'Enter a username.';
-        } else if (username.length < 3 || username.length > 15) {
-            document.querySelector('#username_validation').innerHTML = 'Username needs to be between 3 and 15 characters.';
-        } else if (username === 'Admin' || username === 'admin') {
-            document.querySelector('#username_validation').innerHTML = 'Please choose a different username.';
-        } else {
+    // Ensure user has filled in username that is between 4 and 20 characters.
+    if (!username) {
+        document.querySelector('#username_validation').innerHTML = 'Enter a username.';
+    } else if (username.length < 3 || username.length > 15) {
+        document.querySelector('#username_validation').innerHTML = 'Username needs to be between 3 and 15 characters.';
+    } else if (username === 'Admin' || username === 'admin') {
+        document.querySelector('#username_validation').innerHTML = 'Please choose a different username.';
+    } else {
 
-            // Save username.
-            localStorage.setItem('username', username);
-        }
-    };
+        // Save username.
+        localStorage.setItem('username', username);
+
+        // Hide modal.
+        $('#username_modal').modal('hide');
+
+        // Welcome user.
+        document.querySelector('#welcome').innerHTML = `Hello ${username}`;
+    }
 }

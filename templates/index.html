@@ -29,16 +29,18 @@
                     <div class="modal-header">
                         <h5 class="modal-title">Please choose a username.</h5>
                     </div>
-                    <div class="modal-body">
-                        <input autocomplete="off" name="username" id="username" type="text"/>
-                        <small id="username_help" class="form-text text-muted">
-                            Other users will be able to see this name.
-                        </small>
-                        <p id="username_validation" class="validation_message"></p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" id="username_button">>>></button>
-                    </div>
+                    <form action="#" onsubmit="save_username(); return false" >
+                        <div class="modal-body">
+                            <input autocomplete="off" name="username" id="username" type="text"/>
+                            <small id="username_help" class="form-text text-muted">
+                                Other users will be able to see this name.
+                            </small>
+                            <p id="username_validation" class="validation_message"></p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-secondary">>>></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
