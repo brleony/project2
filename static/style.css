@@ -3,6 +3,7 @@
     100%    { opacity: 1; }
 }
 
+/* Collapse channel list on small screen */
 @media (min-width: 768px) {
     #channel_list {
       height: 54vh;
@@ -63,6 +64,10 @@ body {
     width: inherit;
     margin: 0;
 }
+#channel_list li {
+    padding: 4px;
+    list-style-type: none;
+}
 #channel_list a:hover, #channel_list a:active {
     color: grey;
 }
@@ -77,12 +82,6 @@ body {
     height: 5vh;
     font-size: 4vh;
 }
-#message_div {
-    overflow-y: scroll;
-    overflow-x: hidden;
-    height: 58vh;
-    width: inherit;
-}
 #message_input {
     position: absolute;
     width: inherit;
@@ -90,11 +89,31 @@ body {
     bottom: 0;
 }
 
-ul {
+/* Messages div */
+#message_div {
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 58vh;
+    width: inherit;
+}
+/* Messages */
+#channel_messages li {
+    display: inline-block;
+    width: calc(100% - 5px);
     list-style-type: none;
 }
-ul li {
-    padding: 8px;
+#channel_messages .sent p {
+    float: right;
+    background-color: #CC8C94;
+}
+#channel_messages .reply p {
+    float: left;
+    background-color: lightgrey;
+}
+#channel_messages li p {
+    padding: 10px 20px 10px 20px;
+    border-radius: 5px;
+    margin-bottom: 0rem;
 }
 
 .validation_message {

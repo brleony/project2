@@ -52,6 +52,7 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
+// Add welcome message to header.
 function welcome_user (username) {
 
     var welcome = document.querySelector('#welcome');
@@ -197,7 +198,14 @@ function append_message(message) {
 
     // Create new list item.
     const this_message = document.createElement('li');
-    this_message.innerHTML = `${message['username']} @ ${time_formatted}: ${message['message']}`;
+    this_message.innerHTML = `<p>${message['username']} @ ${time_formatted}: ${message['message']}</p>`;
+
+    // Class depends on who message came from.
+    if (message['username'] == localStorage.getItem('username')) {
+        this_message.classList.add('sent');
+    } else {
+        this_message.classList.add('reply');
+    }
 
     // Append to channel list.
     var list = document.querySelector('#channel_messages');
