@@ -223,6 +223,8 @@ function save_username() {
         $('#username_modal').modal('hide');
 
         // Welcome user.
-        document.querySelector('#welcome').innerHTML = `Hello ${username}`;
+        var welcome = document.querySelector('#welcome')
+        welcome.innerHTML = `Hello ${username}`;
+        welcome.style.animationPlayState = 'running'
     }
 }
