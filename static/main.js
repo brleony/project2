@@ -65,13 +65,6 @@ function display_channel (channel_name) {
         localStorage.setItem('current_channel', channel_name);
     }
 
-    // Change the displayed title.
-    const channel_titel = document.querySelector('#channel_title');
-    channel_titel.innerHTML = `#${channel_name}`;
-
-    // Remove old messages.
-    document.querySelector('#channel_messages').innerHTML = '';
-
     // Open new request to get messages.
     const request = new XMLHttpRequest();
     request.open('POST', '/showmessages');
@@ -79,19 +72,30 @@ function display_channel (channel_name) {
 
         const messages = JSON.parse(request.responseText);
 
-        // Append messages.
-        messages.forEach(message => {
-            append_message(message);
-        });
+        // Only change channel if channel exists.
+        if (messages != 'Error') {
+
+            // Change the displayed title.
+            const channel_titel = document.querySelector('#channel_title');
+            channel_titel.innerHTML = `#${channel_name}`;
+
+            // Remove old messages.
+            document.querySelector('#channel_messages').innerHTML = '';
+
+            // Append messages.
+            messages.forEach(message => {
+                append_message(message);
+            });
+
+            // Show input field.
+            document.querySelector('#message_input').style.display = "block";
+        }
     };
 
     // Send request with channel name.
     const data = new FormData();
     data.append('channel_name', channel_name);
     request.send(data);
-
-    // Show input field.
-    document.querySelector('#message_input').style.display = "block";
 }
 
 // Show all messages that were sent to a channel.

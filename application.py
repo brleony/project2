@@ -66,7 +66,13 @@ def message(data):
 def showmessages():
 
     # Get stored messages.
-    messages = channels[request.form.get("channel_name")]
+    try:
+        messages = channels[request.form.get("channel_name")]
+    # If channel does not exist, return error.
+    except KeyError:
+        error = 'Error'
+        print (error)
+        return jsonify(error)
 
     # Return list of posts.
     return jsonify(messages)
