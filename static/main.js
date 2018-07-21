@@ -188,7 +188,7 @@ function append_message(message) {
 
     // Append to channel list.
     var list = document.querySelector('#channel_messages');
-    list.appendChild(this_message);
+    list.appendChild(this_message).scrollIntoView({behavior: "smooth"});
 }
 
 // Shows modal that asks for username.
