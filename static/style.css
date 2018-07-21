@@ -1,3 +1,6 @@
+/* Font */
+@import url('https://fonts.googleapis.com/css?family=Noto+Sans|Playfair+Display:900');
+
 @keyframes opacity {
     0%    { opacity: 0; }
     100%    { opacity: 1; }
@@ -6,12 +9,18 @@
 /* Collapse channel list on small screen */
 @media (min-width: 768px) {
     #channel_list {
-      height: 54vh;
+        height: 54vh;
+    }
+    #welcome {
+        font-size: 8vh;
     }
 }
 @media (max-width: 767px) {
     #channel_list {
-      height: 40px;
+        height: 40px;
+    }
+    #welcome {
+        font-size: 8vw;
     }
 }
 
@@ -21,6 +30,12 @@ body {
     background-attachment: fixed;
     background-position: center;
     background-color: #9E656B; /* Copper Rose */
+
+    font-family: 'Noto Sans', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', serif;
 }
 
 #header {
@@ -31,7 +46,6 @@ body {
 }
 
 #welcome {
-    font-size: 8vh;
     animation-name: opacity;
     animation-duration: 3s;
     animation-play-state: paused;
