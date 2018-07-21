@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         username_modal();
     } else {
         // Welcome user.
-        document.querySelector('#welcome').innerHTML = `Hello ${username}`;
+        welcome_user(username);
     }
 
     // If channel was remembered, go to that channel.
@@ -51,6 +51,15 @@ document.addEventListener('DOMContentLoaded', () => {
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
+
+function welcome_user (username) {
+
+    var welcome = document.querySelector('#welcome');
+
+    welcome.innerHTML = `Hello ${username}`;
+
+    welcome.style.animationPlayState = 'running';
+}
 
 // Display the channel (title and messages).
 function display_channel (channel_name) {
@@ -223,8 +232,6 @@ function save_username() {
         $('#username_modal').modal('hide');
 
         // Welcome user.
-        var welcome = document.querySelector('#welcome')
-        welcome.innerHTML = `Hello ${username}`;
-        welcome.style.animationPlayState = 'running'
+        welcome_user(username);
     }
 }

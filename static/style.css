@@ -1,10 +1,6 @@
 @keyframes opacity {
-    from {
-        opacity: 0;
-    }
-    to  {
-        opacity: 1;
-    }
+    0%    { opacity: 0; }
+    100%    { opacity: 1; }
 }
 
 @media (min-width: 768px) {
@@ -38,7 +34,9 @@ body {
     animation-name: opacity;
     animation-duration: 3s;
     animation-play-state: paused;
-
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
 }
 
 #sidebar {
@@ -102,6 +100,11 @@ ul li {
 .validation_message {
     color: red;
     font-weight: 600;
+}
+
+::selection {
+    color: white;
+    background-color: #9E656B;
 }
 
 /*
