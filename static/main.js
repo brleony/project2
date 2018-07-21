@@ -26,11 +26,6 @@ document.addEventListener('DOMContentLoaded', () => {
         display_channel(localStorage.getItem('current_channel'));
     }
 
-    // Create channel.
-    document.querySelector('#create_channel').onclick = () => {
-        create_channel();
-    };
-
     // When new channel already exists.
     socket.on('channel_exists', () => {
         document.querySelector('#channel_name_validation').innerHTML = 'Channel already exists.';

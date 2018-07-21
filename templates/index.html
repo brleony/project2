@@ -56,14 +56,14 @@
                 <div class="col-md-3" id="sidebar">
 
                     <!-- Form to create channel -->
-                    <form id="channel_form">
+                    <form action="#" onsubmit="create_channel(); return false" id="channel_form">
                         <div class="input-group">
                             <div class="input-group-prepend">
                                 <span class="input-group-text" id="basic-addon1">#</span>
                             </div>
                             <input autocomplete="off" class="form-control" id="channel_name" type="text" placeholder="Channel name">
                         </div>
-                        <button type="button" class="btn btn-secondary" id="create_channel">Create</button>
+                        <button type="submit" class="btn btn-secondary">Create</button>
                         <p id="channel_name_validation" class="validation_message"></p>
                     </form>
 
