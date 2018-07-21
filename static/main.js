@@ -171,6 +171,10 @@ function message_broadcasted(message) {
     if (message["current_channel"] === localStorage.getItem('current_channel')) {
 
         append_message(message);
+
+        // Play sound.
+        var audio = new Audio('static/light.mp3');
+        audio.play();
     }
 }
 
