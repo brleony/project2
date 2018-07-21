@@ -198,18 +198,27 @@ function append_message(message) {
 
     // Create new list item.
     const this_message = document.createElement('li');
-    this_message.innerHTML = `<p>${message['username']} @ ${time_formatted}: ${message['message']}</p>`;
 
-    // Class depends on who message came from.
+    // Class and message depend on who message came from.
     if (message['username'] == localStorage.getItem('username')) {
+
+        // Message with X icon
+        this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}<i class="fas fa-times-circle" onclick="delete_message()"></i></p>`;
         this_message.classList.add('sent');
+
     } else {
+        this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}</p>`;
         this_message.classList.add('reply');
     }
 
     // Append to channel list.
     var list = document.querySelector('#channel_messages');
     list.appendChild(this_message).scrollIntoView({behavior: "smooth"});
+}
+
+// Delete user's own message.
+function delete_message() {
+    console.log('You are trying to delete a message.');
 }
 
 // Shows modal that asks for username.

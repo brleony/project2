@@ -121,9 +121,15 @@ body {
     font-weight: 600;
 }
 
+/* Font awesome icons */
+.fas {
+    color: white;
+    padding-left: 15px;
+}
+
 ::selection {
     color: white;
-    background-color: #9E656B;
+    background-color: black;
 }
 
 /*
