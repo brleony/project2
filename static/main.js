@@ -198,17 +198,31 @@ function channel_broadcasted(channel_name) {
 // Send a message in the current channel when user clicks 'send' or hits enter.
 function send_message() {
 
-    // Get message, username and current channel.
+    // Remove validation message.
+    $('#message').tooltip('dispose');
+
+    // Save message.
     const message = document.querySelector('#message').value;
-    const username = localStorage.getItem('username');
-    const current_channel = localStorage.getItem('current_channel');
-    const timestamp = Date.now();
 
-    // Empty input field.
-    document.querySelector('#message').value = '';
+    // Validate channel name.
+    if (!message) {
 
-    // Emit new message.
-    socket.emit('message', {'message': message, 'current_channel': current_channel, 'username': username, 'timestamp': timestamp});
+        $('#message').tooltip({'placement': 'top', 'trigger': 'manual', 'title': 'Enter a message.'});
+        $('#message').tooltip('show');
+
+    } else {
+
+        // Save username, channel and time.
+        const username = localStorage.getItem('username');
+        const current_channel = localStorage.getItem('current_channel');
+        const timestamp = Date.now();
+
+        // Empty input field.
+        document.querySelector('#message').value = '';
+
+        // Emit new message.
+        socket.emit('message', {'message': message, 'current_channel': current_channel, 'username': username, 'timestamp': timestamp});
+    }
 }
 
 // If a new message is sent to the current channel, display the message.

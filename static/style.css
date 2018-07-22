@@ -144,6 +144,11 @@ h1, h2, h3, h4, h5, h6 {
     font-size: 125%;
 }
 
+#username_validation {
+    color: red;
+    font-weight: 600;
+}
+
 /* Font awesome icons */
 .fas {
     color: white;
