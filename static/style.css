@@ -25,11 +25,11 @@
 }
 
 body {
-    background-image: url("https://images.pexels.com/photos/414171/pexels-photo-414171.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260");
+    background-image: url("sunset.jpg");
     background-size: cover;
     background-attachment: fixed;
     background-position: center;
-    background-color: #9E656B; /* Copper Rose */
+    background-color: dimgrey;
 
     font-family: 'Noto Sans', sans-serif;
 }
@@ -93,8 +93,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 #channel_title {
     text-align: center;
-    height: 5vh;
-    font-size: 4vh;
+    height: 6vh;
+    font-size: 5vh;
 }
 #message_input {
     position: absolute;
@@ -137,7 +137,7 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Tooltip */
 .tooltip-inner {
-    background-color: #9E656B;
+    background-color: #9E656B; /* Copper Rose */
     border: 2px solid black;
     padding: 10px;
     font-family: 'Arial', sans-serif;
