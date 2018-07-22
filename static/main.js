@@ -289,8 +289,13 @@ function deleted_broadcasted(data) {
 
     if (data["current_channel"] === localStorage.getItem('current_channel')) {
 
+        var message = document.getElementById(data["id"]);
+
         // Hide message.
-        document.getElementById(data["id"]).style.display = 'none';
+        message.style.animationPlayState = 'running';
+        message.addEventListener('animationend', () =>  {
+            message.remove();
+        });
     }
 }
 

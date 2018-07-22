@@ -1,9 +1,25 @@
 /* Font */
 @import url('https://fonts.googleapis.com/css?family=Noto+Sans|Playfair+Display:900');
 
+/* Animation to show "Hello <name>" text */
 @keyframes opacity {
     0%    { opacity: 0; }
     100%    { opacity: 1; }
+}
+/* Animation to hide deleted message */
+@keyframes hide {
+    0% {
+        opacity: 1;
+        height: 100%;
+    }
+    50% {
+        opacity: 0;
+        height: 100%;
+    }
+    100% {
+        opacity: 0;
+        height: 0px;
+    }
 }
 
 /* Collapse channel list on small screen */
@@ -115,6 +131,10 @@ h1, h2, h3, h4, h5, h6 {
     display: inline-block;
     width: calc(100% - 5px);
     list-style-type: none;
+    animation-name: hide;
+    animation-duration: 1s;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
 }
 #channel_messages .sent p {
     float: right;
