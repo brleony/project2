@@ -151,16 +151,22 @@ function show_messages (messages) {
 function create_channel() {
 
     // Remove validation message.
-    document.querySelector('#channel_name_validation').innerHTML = '';
+    $('#channel_name').tooltip('dispose');
 
     // Save channel name.
     var channel_name = document.querySelector('#channel_name').value;
 
     // Validate channel name.
     if (!channel_name) {
-            document.querySelector('#channel_name_validation').innerHTML = 'Enter a channel name.';
+
+        $('#channel_name').tooltip({'placement': 'top', 'trigger': 'manual', 'title': 'Enter a channel name.'});
+        $('#channel_name').tooltip('show');
+
     } else if (channel_name.length < 3 || channel_name.length > 15) {
-            document.querySelector('#channel_name_validation').innerHTML = 'Channel name needs to be between 3 and 15 characters.';
+
+        $('#channel_name').tooltip({'placement': 'top', 'trigger': 'manual', 'title': 'Channel name needs to be between 3 and 15 characters.'});
+        $('#channel_name').tooltip('show');
+
     } else {
         // Empty input field.
         document.querySelector('#channel_name').value = '';
