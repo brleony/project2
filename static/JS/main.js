@@ -47,6 +47,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // When a deleted message is broadcasted.
     socket.on('deleted_message', deleted_broadcasted);
+
+    // When user tried to join channel that does not exist.
+    socket.on('channel_deleted', warning => {
+        alert(warning);
+    });
 });
 
 // Toggle audio when button is clicked.

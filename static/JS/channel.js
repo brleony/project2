@@ -68,7 +68,9 @@ function join_channel(channel_name) {
     const request = new XMLHttpRequest();
     request.open('POST', '/showmessages');
     request.onload = () => {
-        const messages = JSON.parse(request.responseText);
+        const json = JSON.parse(request.responseText);
+        const messages = json[1];
+        const channel_name = json[0];
 
         // Change the displayed title.
         document.querySelector('#channel_title').innerHTML = `#${channel_name}`;

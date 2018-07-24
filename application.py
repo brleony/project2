@@ -9,13 +9,21 @@ app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
+def message(message, username, timestamp, message_id):
+    new_message = {}
+    new_message["message"] = message
+    new_message["username"] = username
+    new_message["timestamp"] = timestamp
+    new_message["id"] = message_id
+
+    return new_message
+
 # Dict with default challenges and messages.
-channels = {'Chitchat': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
-                'message': '🗣️ Feel free to use this channel to talk about whatever you feel like'}],
-            'Music': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
-                'message': 'Use this channel to talk about your favorite artists, to share a cool song you just discovered or to spread the love about that awesome album 🎵'}],
-            'Photography': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
-                'message': 'Photography enthusiasts unite! 📷 Share your pics, ask for advice or flaunt your favorite photo gear.'}]}
+message_chitchat = message('🗣️ Feel free to use this channel to talk about whatever you feel like', 'Admin', 1532433600000, -1 )
+message_music = message('Use this channel to talk about your favorite artists, to share a cool song you just discovered or to spread the love about that awesome album 🎵', 'Admin', 1532433600000, -1 )
+message_photography = message('Photography enthusiasts unite! 📷 Share your pics, ask for advice or flaunt your favorite photo gear.', 'Admin', 1532433600000, -1 )
+
+channels = {'Chitchat': [message_chitchat], 'Music': [message_music], 'Photography': [message_photography]}
 
 
 # Counter for message id.
@@ -35,12 +43,7 @@ def newchannel(data):
     if new_channel in channels:
         emit("channel_exists")
     else:
-        # Save first message.
-        first_message = {}
-        first_message["username"] = "Admin"
-        first_message["timestamp"] = data["timestamp"]
-        first_message["message"] = "This channel was created by {}.".format(data["username"])
-        first_message["id"] = -1
+        first_message = message("This channel was created by {}.".format(data["username"]), "Admin", data["timestamp"], -1)
 
         # Add channel with first message to channels dict.
         channels[new_channel] = []
@@ -50,42 +53,40 @@ def newchannel(data):
         emit("channels", new_channel, broadcast=True)
 
 @socketio.on("message")
-def message(data):
+def new_message(data):
 
-    new_message = {}
-
-    # Get username, timestamp and message.
-    new_message["message"] = data["message"]
-    new_message["username"] = data["username"]
-    new_message["timestamp"] = data["timestamp"]
-    current_channel, new_message["current_channel"] = data["current_channel"], data["current_channel"]
-
-    # Set ID and increase counter.
     global counter
-    new_message["id"] = counter
+    new_message = message(data["message"], data["username"], data["timestamp"], counter)
     counter += 1
 
+    current_channel, new_message["current_channel"] = data["current_channel"], data["current_channel"]
+
     # Add new message to message list.
-    channels[current_channel].append(new_message)
+    try:
+        channels[current_channel].append(new_message)
 
-    # Only store 100 most recent messages.
-    channels[current_channel] = channels[current_channel][-100:]
+        # Only store 100 most recent messages.
+        channels[current_channel] = channels[current_channel][-100:]
 
-    # Emit.
-    emit("new_message", new_message, room=current_channel)
+        emit("new_message", new_message, room=current_channel)
+    except KeyError:
+        socketio.emit("channel_deleted", 'Channel does not exist.')
 
 @app.route("/showmessages", methods=["POST"])
 def showmessages():
-
     # Get stored messages.
     try:
-        messages = channels[request.form.get("channel_name")]
+        channel = request.form.get("channel_name")
+        messages = channels[channel]
     # Get chitchat messages if channel does not exist.
     except KeyError:
-        messages = channels['Chitchat']
+        channel = 'Chitchat'
+        messages = channels[channel]
+        # Warn that channel does not exist.
+        socketio.emit("channel_deleted", 'Channel does not exist.')
 
     # Return list of posts.
-    return jsonify(messages)
+    return jsonify(channel, messages)
 
 @socketio.on("join_channel")
 def join_channel(data):
@@ -95,7 +96,6 @@ def join_channel(data):
 @socketio.on("deletemessage")
 def deletemessage(data):
     current_channel = data["current_channel"]
-
     message_id = int(data["id"])
 
     for i, message in enumerate(channels[current_channel]):
@@ -103,5 +103,4 @@ def deletemessage(data):
             del channels[current_channel][i]
 
             emit("deleted_message", message_id, room=current_channel)
-
             break
