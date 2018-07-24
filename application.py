@@ -25,7 +25,6 @@ message_photography = message('Photography enthusiasts unite! 📷 Share your pi
 
 channels = {'Chitchat': [message_chitchat], 'Music': [message_music], 'Photography': [message_photography]}
 
-
 # Counter for message id.
 counter = 0
 
