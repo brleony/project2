@@ -102,10 +102,6 @@ def deletemessage(data):
         if message["id"] == message_id:
             del channels[current_channel][i]
 
-            deleted = {}
-            deleted["id"] = message_id
-            deleted["current_channel"] = current_channel
-
-            emit("deleted_message", deleted, broadcast=True)
+            emit("deleted_message", message_id, room=current_channel)
 
             break
