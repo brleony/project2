@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     counter = 0;
 
-    // Connect to websocket
+    // Connect to websocket.
     socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
     // Get username from local storage.
@@ -19,7 +19,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (!username) {
         username_modal();
     } else {
-        // Welcome user.
         welcome_user(username);
     }
 
@@ -38,33 +37,25 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // When new channel is broadcasted.
-    socket.on('channels', channel_name => {
-        channel_broadcasted(channel_name);
-    });
+    socket.on('channels', channel_broadcasted);
 
     // When a new message is broadcasted.
-    socket.on('new_message', (new_message) => {
-        message_broadcasted(new_message);
-    });
+    socket.on('new_message', message_broadcasted);
 
     // When a deleted message is broadcasted.
-    socket.on('deleted_message', (data) => {
-        deleted_broadcasted(data);
-    });
+    socket.on('deleted_message', deleted_broadcasted);
 });
 
 function toggle_audio() {
 
     var icon = document.getElementById("audio_toggle");
 
-    if (notification.muted == true) {
-
+    if (notification.muted) {
         notification.muted = false;
 
         icon.classList.remove('fa-volume-off');
         icon.classList.add('fa-volume-up');
-    } else if (notification.muted == false) {
-
+    } else {
         notification.muted = true;
 
         icon.classList.remove('fa-volume-up');
@@ -83,7 +74,7 @@ String.prototype.capitalize = function() {
 };
 
 // Add welcome message to header.
-function welcome_user (username) {
+function welcome_user(username) {
 
     var welcome = document.querySelector('#welcome');
 
@@ -93,7 +84,9 @@ function welcome_user (username) {
 }
 
 // Display the channel (title and messages).
-function display_channel (channel_name) {
+function display_channel(channel_name) {
+
+    var old_channel = localStorage.getItem('current_channel', channel_name);
 
     // If no parameter was passed.
     if (typeof channel_name === 'undefined') {
@@ -105,6 +98,8 @@ function display_channel (channel_name) {
         localStorage.setItem('current_channel', channel_name);
     }
 
+    socket.emit("join_channel", {"channel_name": channel_name, "old_channel": old_channel});
+
     // Open new request to get messages.
     const request = new XMLHttpRequest();
     request.open('POST', '/showmessages');
@@ -112,24 +107,17 @@ function display_channel (channel_name) {
 
         const messages = JSON.parse(request.responseText);
 
-        // Only change channel if channel exists.
-        if (messages != 'Error') {
+        // Change the displayed title.
+        const channel_titel = document.querySelector('#channel_title');
+        channel_titel.innerHTML = `#${channel_name}`;
 
-            // Change the displayed title.
-            const channel_titel = document.querySelector('#channel_title');
-            channel_titel.innerHTML = `#${channel_name}`;
+        // Remove old messages.
+        document.querySelector('#channel_messages').innerHTML = '';
 
-            // Remove old messages.
-            document.querySelector('#channel_messages').innerHTML = '';
+        show_messages(messages);
 
-            // Append messages.
-            messages.forEach(message => {
-                append_message(message);
-            });
-
-            // Show input field.
-            document.querySelector('#message_input').style.display = "block";
-        }
+        // Show input field.
+        document.querySelector('#message_input').style.display = "block";
     };
 
     // Send request with channel name.
@@ -139,12 +127,8 @@ function display_channel (channel_name) {
 }
 
 // Show all messages that were sent to a channel.
-function show_messages (messages) {
-
-    messages.forEach(message => {
-
-        append_message(message);
-    });
+function show_messages(messages) {
+    messages.forEach(append_message);
 }
 
 // When user clicks the 'create channel' button, validate the channel name and emit the new channel.
@@ -228,14 +212,11 @@ function send_message() {
 // If a new message is sent to the current channel, display the message.
 function message_broadcasted(message) {
 
-    if (message["current_channel"] === localStorage.getItem('current_channel')) {
+    append_message(message);
 
-        append_message(message);
-
-        // Play notification.
-        if (notification.muted == false && message["username"] != localStorage.getItem('username')) {
-            notification.play();
-        }
+    // Play notification sound.
+    if (notification.muted == false && message["username"] != localStorage.getItem('username')) {
+        notification.play();
     }
 }
 
@@ -255,15 +236,15 @@ function append_message(message) {
 
     // Class and message depend on who message came from.
     if (message['username'] == localStorage.getItem('username')) {
-
         // Message with X icon
         this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}<i class="fas fa-times-circle" onclick="delete_message()"></i></p>`;
         this_message.classList.add('sent');
-
-    } else if (message['username'] == 'Admin') {
+    }
+    else if (message['username'] == 'Admin') {
         this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}</p>`;
         this_message.classList.add('admin');
-    } else {
+    }
+    else {
         this_message.innerHTML = `<p><b>${message['username']}</b> @ ${time_formatted}: ${message['message']}</p>`;
         this_message.classList.add('reply');
     }

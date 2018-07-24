@@ -2,9 +2,10 @@ import os
 import time
 
 from flask import Flask, render_template, jsonify, request
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, join_room, leave_room
 
 app = Flask(__name__)
+app.config["TEMPLATES_AUTO_RELOAD"] = True
 app.config["SECRET_KEY"] = os.getenv("SECRET_KEY")
 socketio = SocketIO(app)
 
@@ -15,6 +16,7 @@ channels = {'Chitchat': [{'username': 'Admin', 'timestamp': 1532433600000, 'id':
                 'message': 'Use this channel to talk about your favorite artists, to share a cool song you just discovered or to spread the love about that awesome album 🎵'}],
             'Photography': [{'username': 'Admin', 'timestamp': 1532433600000, 'id': -1,
                 'message': 'Photography enthusiasts unite! 📷 Share your pics, ask for advice or flaunt your favorite photo gear.'}]}
+
 
 # Counter for message id.
 counter = 0
@@ -70,7 +72,7 @@ def message(data):
     channels[current_channel] = channels[current_channel][-100:]
 
     # Emit.
-    emit("new_message", new_message, broadcast=True)
+    emit("new_message", new_message, room=current_channel)
 
 @app.route("/showmessages", methods=["POST"])
 def showmessages():
@@ -78,18 +80,20 @@ def showmessages():
     # Get stored messages.
     try:
         messages = channels[request.form.get("channel_name")]
-    # If channel does not exist, return error.
+    # Get chitchat messages if channel does not exist.
     except KeyError:
-        error = 'Error'
-        print (error)
-        return jsonify(error)
+        messages = channels['Chitchat']
 
     # Return list of posts.
     return jsonify(messages)
 
+@socketio.on("join_channel")
+def join_channel(data):
+    leave_room(data["old_channel"])
+    join_room(data["channel_name"])
+
 @socketio.on("deletemessage")
 def deletemessage(data):
-
     current_channel = data["current_channel"]
 
     message_id = int(data["id"])
